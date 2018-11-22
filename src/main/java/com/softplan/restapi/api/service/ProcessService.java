@@ -10,4 +10,8 @@ public interface ProcessService {
 	Process findById(String id);
 	
 	Page<Process> findAll(int page, int count);
+
+	Page<Process> findByNumber(int page, int count, Integer number);
+
+	Page<Process> findByParameters(int page, int count, String status);
 }

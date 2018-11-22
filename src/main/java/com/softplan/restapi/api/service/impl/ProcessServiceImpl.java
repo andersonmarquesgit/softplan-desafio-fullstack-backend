@@ -30,4 +30,14 @@ public class ProcessServiceImpl implements ProcessService {
 		return this.processRepository.findAll(PageRequest.of(page, count));
 	}
 
+	@Override
+	public Page<Process> findByNumber(int page, int count, Integer number) {
+		return this.processRepository.findByNumber(number, PageRequest.of(page, count));
+	}
+
+	@Override
+	public Page<Process> findByParameters(int page, int count, String status) {
+		return this.processRepository.findByStatusIgnoreCaseContainingOrderByCreateAtDesc(status, PageRequest.of(page, count));
+	}
+
 }

@@ -1,5 +1,8 @@
 package com.softplan.restapi.api.service.impl;
 
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +41,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Page<User> findAll(int page, int count) {
 		return this.userRepository.findAll(PageRequest.of(page, count));
+	}
+
+	@Override
+	public Set<User> findByIdIn(List<String> ids) {
+		return this.userRepository.findByIdIn(ids);
 	}
 
 }

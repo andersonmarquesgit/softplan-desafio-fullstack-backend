@@ -145,6 +145,7 @@ public class ProcessController {
 			
 			processCurrent.setUsersAssigned(users);
 			processCurrent.setStatus(StatusEnum.Assigned);
+			processCurrent.setUpdateAt(new Date());
 					
 			Process processPersisted = this.processService.createOrUpdate(processCurrent);
 			response.setData(processPersisted);

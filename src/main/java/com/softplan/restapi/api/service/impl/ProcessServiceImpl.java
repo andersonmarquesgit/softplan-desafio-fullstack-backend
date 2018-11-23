@@ -40,4 +40,9 @@ public class ProcessServiceImpl implements ProcessService {
 		return this.processRepository.findByStatusIgnoreCaseContainingOrderByCreateAtDesc(status, PageRequest.of(page, count));
 	}
 
+	@Override
+	public Page<Process> findByLegalOpinionIsNull(int page, int count) {
+		return this.processRepository.findByLegalOpinionIsNull(PageRequest.of(page, count));
+	}
+
 }

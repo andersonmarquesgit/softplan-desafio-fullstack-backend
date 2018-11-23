@@ -118,6 +118,22 @@ public class ProcessController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping(value = "{page}/{count}/{legalOpinionIsNull}")
+	@PreAuthorize("hasAnyRole('USER_FINISHER')")//Autorização com base no perfil. Nesse caso apenas USER_SCREENING podem listar processos.
+	public ResponseEntity<Response<Page<Process>>> findByLegalOpinionIsNull(@PathVariable int page, @PathVariable int count, @PathVariable Boolean legalOpinionIsNull) {
+		Response<Page<Process>> response = new Response<Page<Process>>();
+		Page<Process> processList = null;
+		
+		if(legalOpinionIsNull) {
+			processList = this.processService.findByLegalOpinionIsNull(page, count);
+		}else {
+			processList = this.processService.findAll(page, count);
+		}
+		
+		response.setData(processList);	
+		return ResponseEntity.ok(response);
+	}
+	
 	@PutMapping(value = "{id}")
 	@PreAuthorize("hasAnyRole('USER_SCREENING')")
 	public ResponseEntity<Response<Process>> assignUser(

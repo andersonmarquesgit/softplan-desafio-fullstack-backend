@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -131,6 +132,41 @@ public class ProcessController {
 		}
 		
 		response.setData(processList);	
+		return ResponseEntity.ok(response);
+	}
+	
+	@PatchMapping(value = "{id}")
+	@PreAuthorize("hasAnyRole('USER_FINISHER')")
+	public ResponseEntity<Response<Process>> updateLegalOpnion(
+			HttpServletRequest request,
+			@PathVariable String id,
+			@RequestBody String legalOpinion,
+			BindingResult result) {
+		
+		Response<Process> response = new Response<Process>();
+		Process processCurrent = this.processService.findById(id);
+		
+		if(processCurrent == null) {
+			response.getErrors().add("Register not found! ID: " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		try {
+			if(result.hasErrors()) {
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			} 
+			
+			processCurrent.setLegalOpinion(legalOpinion);
+			processCurrent.setUpdateAt(new Date());
+					
+			Process processPersisted = this.processService.createOrUpdate(processCurrent);
+			response.setData(processPersisted);
+		} catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+		
 		return ResponseEntity.ok(response);
 	}
 	

@@ -38,10 +38,24 @@ public class RestapiApplication {
 		admin.setEmail("admin@softplan.com");
 		admin.setPassword(passwordEncoder.encode("123456"));
 		admin.setProfile(ProfileEnum.ROLE_ADMIN);
+		
+		User userScreening = new User();
+		userScreening.setEmail("sc@softplan.com");
+		userScreening.setPassword(passwordEncoder.encode("123456"));
+		userScreening.setProfile(ProfileEnum.ROLE_USER_SCREENING);
+		
+		User userFinisher = new User();
+		userFinisher.setEmail("fc@softplan.com");
+		userFinisher.setPassword(passwordEncoder.encode("123456"));
+		userFinisher.setProfile(ProfileEnum.ROLE_USER_FINISHER);
 
 		User find = userRepository.findByEmail("admin@softplan.com");
-		if (find == null) {
+		User find1 = userRepository.findByEmail("sc@softplan.com");
+		User find2 = userRepository.findByEmail("fc@softplan.com");
+		if (find == null && find1 == null && find2 == null) {
 			userRepository.save(admin);
+			userRepository.save(userScreening);
+			userRepository.save(userFinisher);
 		}
 	}
 	
